@@ -15,5 +15,7 @@ public interface IContact {
     
        public void create(Contact c);
    public List <Contact>findAll();
+      public List <Contact>get();
+
     
 }

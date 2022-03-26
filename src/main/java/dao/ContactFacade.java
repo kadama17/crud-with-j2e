@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dao;
-
+ 
 import DAO.ConnexionBD;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -89,4 +89,36 @@ public class ContactFacade {
              }
         catch(Exception ex){ex.printStackTrace();}
 }
-}
+            
+             public static ArrayList<Contact> get(int idname) throws Exception{
+            try{
+            Statement stmt =ConnexionBD.getConnexion();
+                String q = "select * from Contact where id_contact="+idname;
+                ResultSet rs = stmt.executeQuery(q);
+
+                ArrayList<Contact> contact = new ArrayList<Contact>();
+                while(rs.next()){
+                    
+                    
+                int id_contact=rs.getInt(1);
+                String firstName=rs.getString(2);
+                String lastName= rs.getString(3);
+                String email=rs.getString(4);
+                int phone= rs.getInt(5);
+                String address= rs.getString(6);
+                    
+                    
+                contact.add(new Contact(id_contact, firstName, lastName, email, phone, address));
+                }
+                System.out.println("All records have been selected!");
+                                         System.out.println(contact);
+
+                return contact;
+
+            }catch(Exception e){System.out.println(e);}
+            return null;
+
+        }
+ 
+
+            }

@@ -13,13 +13,13 @@ public class NewMain {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // TODO code application logic here
         ContactFacade cf = new ContactFacade();
       //  cf.create(new Contact(1, "kone", "adama", "kadama@gmail.com", 555, "adddkj"));
         //c.create(c);
-        cf.findAll();
-        cf.updateContact(new Contact(3, "kone", "adama", "kadama@gmail.com", 555, "adddkj"));
+        cf.get(33);
+      //  cf.updateContact(new Contact(3, "kone", "adama", "kadama@gmail.com", 555, "adddkj"));
     }
     
 }

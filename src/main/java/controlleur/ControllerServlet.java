@@ -13,7 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.ContactFacade;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Contact;
 
 /**
@@ -136,6 +139,28 @@ public class ControllerServlet extends HttpServlet {
         }
         
         else if (do_this.equals("search")) {
+            
+           int  id_search = Integer.parseInt(request.getParameter("id_search"));
+            try {
+             
+                ArrayList<Contact>  c= cont.get(id_search);
+                if (!c.isEmpty()){
+               request.setAttribute("searchResult", cont.get(id_search));
+               request.getRequestDispatcher("/searchResult.jsp").forward(request, response);
+      
+                }
+                else {
+               request.getRequestDispatcher("/searchResult.jsp").forward(request, response);
+
+                
+                }
+                
+          
+                
+                
+            } catch (Exception ex) {
+                Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
 }
         }
