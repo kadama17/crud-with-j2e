@@ -13,11 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dao.ContactFacade;
+import dao.UserFacade;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpSession;
 import model.Contact;
+import model.Users;
 
 /**
  *
@@ -64,7 +68,7 @@ public class ControllerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Contact co= new Contact();
-            
+        Users u = new Users();
          String do_this = request.getParameter("do_this");
                 ContactFacade cont =new ContactFacade();
                  if (do_this==null) {
@@ -149,6 +153,7 @@ public class ControllerServlet extends HttpServlet {
                request.getRequestDispatcher("/searchResult.jsp").forward(request, response);
       
                 }
+                
                 else {
                request.getRequestDispatcher("/searchResult.jsp").forward(request, response);
 
@@ -163,6 +168,51 @@ public class ControllerServlet extends HttpServlet {
             }
 
 }
+                 
+                 
+                 else if(do_this.equals("register")){
+                    int id = Integer.parseInt(request.getParameter("id"));
+                   String name= request.getParameter("name");
+                   String email= request.getParameter("email");
+                   String password= request.getParameter("password");
+                   u.setName(name);
+                   u.setEmail(email);
+                   u.setPassword(password);
+                   
+                    UserFacade uf = new UserFacade();
+                    uf.create(u);
+                               response.sendRedirect("ControllerServlet");
+
+                }
+                 
+                 else if (do_this.equals("login")){
+    
+            try {
+                              
+     Users user = new Users();
+     user.setEmail(request.getParameter("email"));
+     user.setPassword(request.getParameter("password"));
+                user = UserFacade.login(user);
+                   if (user.isValid())
+     {
+	        
+          HttpSession session = request.getSession(true);	    
+          session.setAttribute("currentSessionUser",user); 
+          response.sendRedirect("ControllerServlet"); //logged-in page      		
+     }
+                        else {
+          response.sendRedirect("loginPage.jsp"); //error page 
+} 
+                
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(ControllerServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+	    
+     
+
+                 }
+                
         }
         
 
